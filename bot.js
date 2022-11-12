@@ -4,13 +4,6 @@ const TelegramBot = require("node-telegram-bot-api");
 const token = process.env.BOT_API;
 const bot = new TelegramBot(token, { polling: true });
 
-// bot.onText(/aa/i, (msg, match) => {
-//   const chatId = msg.chat.id;
-//   bot.sendMessage(chatId, match[0]);
-//   bot.deleteMessage(chatId, msg.message_id);
-//   console.log(msg);
-// });
-
 bot.onText(/./, (msg) => {
   const frases = ["סקס בישראל", "תשואה של עד 85%", "להשיג יותר מ-$100 ליום"];
   const chatId = msg.chat.id;
