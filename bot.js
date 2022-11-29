@@ -10,6 +10,8 @@ bot.onText(/./, (msg) => {
     "תשואה של עד 85%",
     "להשיג יותר מ-$100 ליום",
     "𝒊𝒏𝒗𝒆𝒔𝒕",
+    "Making money online",
+    "making money online",
   ];
   const chatId = msg.chat.id;
 
