@@ -12,6 +12,12 @@ bot.onText(/./, (msg) => {
     "𝒊𝒏𝒗𝒆𝒔𝒕",
     "Making money online",
     "making money online",
+    "Guys, write, let's talk)",
+    "Ребята, пишите, поговорим)",
+    "Hello boys:)",
+    "Shall we talk?)",
+    "Hi, everybody:)",
+    "Hi, I want to chat.",
   ];
   const chatId = msg.chat.id;
 
