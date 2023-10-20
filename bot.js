@@ -26,4 +26,7 @@ bot.onText(/./, (msg) => {
 
   bot.deleteMessage(chatId, msg.message_id);
   bot.sendMessage(chatId, "Forbidden content deleted");
+  console.log(
+    `Forbidden content deleted in chat: ${chatId}, content: ${msg.message_id}`
+  );
 });
