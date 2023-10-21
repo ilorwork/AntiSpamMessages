@@ -23,30 +23,36 @@ app.use(bodyParser.json());
 
 // Create an endpoint for the Webhook
 app.post(webhookPath, (req, res) => {
-  const msg = req.body;
-  // Handle incoming updates (messages) from Telegram here
-  // Your existing bot code for processing messages can go here
-  const frases = [
-    "𝒊𝒏𝒗еѕт",
-    "Making money online",
-    "making money online",
-    "Guys, write, let's talk)",
-    "Ребята, пишите, поговорим)",
-    "Hello boys:)",
-    "Shall we talk?)",
-    "Hi, everybody:)",
-    "Hi, I want to chat.",
-  ];
-  const chatId = msg.chat.id;
-  const found = frases.find((frase) => msg.text.includes(frase));
-  if (!found) return;
+  try {
+    const msg = req.body;
+    // Handle incoming updates (messages) from Telegram here
+    // Your existing bot code for processing messages can go here
+    const frases = [
+      "𝒊𝒏𝒗еѕт",
+      "Making money online",
+      "making money online",
+      "Guys, write, let's talk)",
+      "Ребята, пишите, поговорим)",
+      "Hello boys:)",
+      "Shall we talk?)",
+      "Hi, everybody:)",
+      "Hi, I want to chat.",
+    ];
+    const chatId = msg.chat.id;
+    const found = frases.find((frase) => msg.text.includes(frase));
+    if (!found) return;
 
-  bot.deleteMessage(chatId, msg.message_id);
-  bot.sendMessage(chatId, "Forbidden content deleted");
-  console.log(
-    `Forbidden content deleted in chat: ${chatId}, content: ${msg.message_id}`
-  );
-  res.status(200).send("OK");
+    bot.deleteMessage(chatId, msg.message_id);
+    bot.sendMessage(chatId, "Forbidden content deleted");
+    console.log(
+      `Forbidden content deleted in chat: ${chatId}, content: ${msg.message_id}`
+    );
+    res.status(200).send("OK");
+  } catch (error) {
+    // Handle the case where the received data is not a valid message or any other error
+    console.error("An error has occure", error);
+    res.status(200).send("OK");
+  }
 });
 
 // Start the Express server
