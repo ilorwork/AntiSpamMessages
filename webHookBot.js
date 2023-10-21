@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const app = express();
 
 // Set up Express server
+const url = process.env.BASE_URL;
 const port = 3000; // You can choose any available port
 
 // Create an instance of your Telegram bot
@@ -13,7 +14,15 @@ const bot = new TelegramBot(token);
 
 // Set up your Webhook URL (publicly accessible server URL with a unique path)
 const webhookPath = "/checkMessages";
-const webhookURL = `https://antispammessages.onrender.com${webhookPath}`;
+const webhookURL = `${url}${webhookPath}`;
+// Render URL
+// const webhookURL = `https://antispammessages.onrender.com${webhookPath}`;
+
+// For testing on localhost with an open to the wide internet connection I use ngrok:
+// const webhookURL = `equally-included-zebra.ngrok-free.app${webhookPath}`;
+// my ngrok dashboard - https://dashboard.ngrok.com/cloud-edge/domains
+// Tunnel command:
+// ngrok http --domain=equally-included-zebra.ngrok-free.app 3000
 
 // Set the Webhook
 bot.setWebHook(webhookURL);
@@ -38,15 +47,18 @@ app.post(webhookPath, (req, res) => {
       "Hi, everybody:)",
       "Hi, I want to chat.",
     ];
-    const chatId = msg.chat.id;
-    const found = frases.find((frase) => msg.text.includes(frase));
+
+    console.log("################################# test");
+    const chatId = msg.message.chat.id;
+    const found = frases.find((frase) => msg.message.text.includes(frase));
     if (!found) return;
 
-    bot.deleteMessage(chatId, msg.message_id);
+    bot.deleteMessage(chatId, msg.message.message_id);
     bot.sendMessage(chatId, "Forbidden content deleted");
     console.log(
-      `Forbidden content deleted in chat: ${chatId}, content: ${msg.message_id}`
+      `Forbidden content deleted in chat: ${chatId}, content: ${msg.message.text}`
     );
+    console.info("Full message object: ", msg);
     res.status(200).send("OK");
   } catch (error) {
     // Handle the case where the received data is not a valid message or any other error
@@ -57,5 +69,7 @@ app.post(webhookPath, (req, res) => {
 
 // Start the Express server
 app.listen(port, () => {
-  console.log(`Bot is listening on port ${port}`);
+  console.log(
+    `Bot is listening on port ${port}, https://t.me/AntiSpamMessagesBot`
+  );
 });
