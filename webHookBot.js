@@ -8,12 +8,14 @@ const app = express();
 const url = process.env.BASE_URL;
 const port = 3000; // You can choose any available port
 
+const myChatId = process.env.MY_CHAT_ID;
+
 // Create an instance of your Telegram bot
 const token = process.env.BOT_API;
 const bot = new TelegramBot(token);
 
 // Set up your Webhook URL (publicly accessible server URL with a unique path)
-const webhookPath = "/checkMessages";
+const webhookPath = process.env.WEBHOOK_PATH;
 const webhookURL = `${url}${webhookPath}`;
 // Render URL
 // const webhookURL = `https://antispammessages.onrender.com${webhookPath}`;
@@ -49,8 +51,14 @@ app.post(webhookPath, (req, res) => {
     ];
 
     console.log("################################# test");
+    // This line causes an error, enable when debugging failure situation is needed.
+    // bot.sendMessage(myChatId, `Forbidden content`, msg.message.text);
+
     const chatId = msg.message.chat.id;
+    console.log("chat id: ", chatId, "text: ", msg.message.text);
+
     const found = frases.find((frase) => msg.message.text.includes(frase));
+    console.log("Is forbidden content: ", !!found);
     if (!found) return;
 
     bot.deleteMessage(chatId, msg.message.message_id);
@@ -63,6 +71,11 @@ app.post(webhookPath, (req, res) => {
   } catch (error) {
     // Handle the case where the received data is not a valid message or any other error
     console.error("An error has occure", error);
+    bot.sendMessage(myChatId, `An error has occure ${error}`);
+    bot.sendMessage(
+      myChatId,
+      `msg details ${JSON.stringify(req.body.message)}`
+    );
     res.status(200).send("OK");
   }
 });
