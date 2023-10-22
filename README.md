@@ -10,3 +10,4 @@ This Telegram bot is meant to detect spam messages using a black-list and delete
 - MY_CHAT_ID - Your own Telegram Chat-id
 - BASE_URL - Your Webhook URL (publicly accessible server URL with a unique path)
 - WEBHOOK_PATH - An endpoint for the Webhook
+- PORT = You can choose any available port (Make sure [ngrok](https://dashboard.ngrok.com/get-started/setup) can work with it)
